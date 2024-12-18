@@ -1,13 +1,12 @@
 //
-//  ContentView.swift
+//  TodayView.swift
 //  MoodTracker
 //
 //  Created by nasim on 18/12/24.
 //
-
 import SwiftUI
 
-struct ContentView: View {
+struct TodayView: View {
     @State private var selectedMood: String = ""
     @State private var selectedPeople: String = ""
     @State private var savedEntries: [DailyEntry] = []
@@ -17,7 +16,7 @@ struct ContentView: View {
             VStack(spacing: 30) {
                 Text("How was your day?")
                     .font(.title2)
-
+                //
                 HStack(spacing: 20) {
                     MoodButton(emoji: "😊", mood: "Happy", selectedMood: $selectedMood)
                     MoodButton(emoji: "😐", mood: "Neutral", selectedMood: $selectedMood)
@@ -26,6 +25,7 @@ struct ContentView: View {
 
                 Text("Who have you been with?")
                     .font(.title2)
+                //
                 HStack(spacing: 20) {
                     PeopleButton(label: "Friends", selectedPeople: $selectedPeople)
                     PeopleButton(label: "Family", selectedPeople: $selectedPeople)
@@ -33,6 +33,7 @@ struct ContentView: View {
                     PeopleButton(label: "None", selectedPeople: $selectedPeople)
                 }
 
+                //
                 Button(action: {
                     let newEntry = DailyEntry(date: Date(), mood: selectedMood, people: selectedPeople)
                     savedEntries.append(newEntry)
@@ -44,19 +45,58 @@ struct ContentView: View {
                         .cornerRadius(10)
                 }
 
-                // 
                 NavigationLink(destination: ReportView(entries: savedEntries)) {
                     Text("Go to Report")
-                        .foregroundColor(.blue)
-                }
-
-                NavigationLink(destination: CalendarView(entries: savedEntries)) {
-                    Text("View Calendar")
                         .foregroundColor(.blue)
                 }
             }
             .padding()
             .navigationTitle("Mood Tracker")
+        }
+    }
+}
+
+//
+struct DailyEntry: Identifiable {
+    let id = UUID()
+    let date: Date
+    let mood: String
+    let people: String
+}
+
+//
+struct MoodButton: View {
+    let emoji: String
+    let mood: String
+    @Binding var selectedMood: String
+
+    var body: some View {
+        Button(action: {
+            selectedMood = mood
+        }) {
+            Text(emoji)
+                .font(.largeTitle)
+                .padding()
+                .background(selectedMood == mood ? Color.yellow : Color.gray.opacity(0.3))
+                .cornerRadius(10)
+        }
+    }
+}
+
+// 
+struct PeopleButton: View {
+    let label: String
+    @Binding var selectedPeople: String
+
+    var body: some View {
+        Button(action: {
+            selectedPeople = label
+        }) {
+            Text(label)
+                .padding()
+                .background(selectedPeople == label ? Color.blue : Color.gray.opacity(0.3))
+                .foregroundColor(.white)
+                .cornerRadius(10)
         }
     }
 }
