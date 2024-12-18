@@ -83,7 +83,7 @@ struct MoodButton: View {
     }
 }
 
-// 
+
 struct PeopleButton: View {
     let label: String
     @Binding var selectedPeople: String
@@ -100,3 +100,6 @@ struct PeopleButton: View {
         }
     }
 }
+
+
+// Learning to push!
